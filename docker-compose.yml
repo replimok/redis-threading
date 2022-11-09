@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    depends_on:
+      - postgres_db
+      - redis
+    build: src
+    networks:
+      backend:
+
+  postgres_db:
+    container_name: postgres_db_b
+    restart: always
+    build: postgres
+    environment:
+      - POSTGRES_DB=backend_db
+      - POSTGRES_USER=backend_user
+      - POSTGRES_PASSWORD=backend_password
+    networks:
+      backend:
+
+  redis:
+    container_name: redis_b
+    restart: always
+    image: redis:7-alpine
+    networks:
+      backend:
+
+networks:
+  backend:
